@@ -22,7 +22,10 @@
                         </v-card>
                     </v-flex>
                     <v-flex xs12>
-                        <v-data-table :headers="headers" :items="items">
+                        <v-data-table
+                                :headers="headers"
+                                :items="items"
+                        >
                             <template slot="items" slot-scope="props">
                                 <td class="text-xs-right">{{ new Date(parseInt(props.item.timestamp)) |
                                     moment("hh:mm:ss:SSS") }}
@@ -46,13 +49,13 @@
     import LineChart from "./LineChart.vue";
 
     export default {
-        components: { LineChart },
+        components: {LineChart},
         data() {
             return {
                 clipped: false,
                 drawer: false,
                 fixed: false,
-                items: [{ icon: "bubble_chart", title: "Übersicht" }],
+                items: [{icon: "bubble_chart", title: "Übersicht"}],
                 miniVariant: false,
                 right: true,
                 rightDrawer: false,
@@ -61,10 +64,10 @@
                 connected: false,
                 reconnectionTimeout: null,
                 headers: [
-                    { text: "Timestamp", value: "timestamp" },
-                    { text: "Sensor", value: "sensor" },
-                    { text: "Wert", value: "value" },
-                    { text: "Inhalt", value: "msg" }
+                    {text: "Timestamp", value: "timestamp"},
+                    {text: "Sensor", value: "sensor"},
+                    {text: "Wert", value: "value"},
+                    {text: "Inhalt", value: "msg"}
                 ],
                 items: [],
                 lineData: {
@@ -124,13 +127,8 @@
         },
         mounted() {
             this.connect();
-            //console.log(this.lineData);
-            this.fixSorting();
         },
         methods: {
-            fixSorting() {
-                //TODO
-            },
             connect() {
                 if (!this.connected) {
                     clearTimeout(this.reconnectionTimeout);
@@ -142,17 +140,6 @@
                         this.dataWs.onmessage = data => {
                             this.addItem(data.data);
                         };
-                        // var data = JSON.stringify({ name: "wolfe" });
-                        // console.log(data);
-                        // var wsTesting = setInterval(() => {
-                        //  if (this.connected) {
-                        //    //console.log("sending wolfe")
-                        //    this.dataWs.send("hi");
-                        //  } else {
-                        //    clearInterval(wsTesting);
-                        //  }
-                        //}, 1000);
-                        // };
                         this.imageWs.onopen = () => {
                             this.setConnected(true);
                             this.imageWs.onmessage = data => {

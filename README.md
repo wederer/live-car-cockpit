@@ -1,5 +1,6 @@
 # Live Car Cockpit - A demo project
 
+![Live Car Cockpit Screenshot](live_car_cockpit.png)
 
 This was an demo project I built for an application. It should represent live data being sent from a car to a cockpit which visualizes the data.
 

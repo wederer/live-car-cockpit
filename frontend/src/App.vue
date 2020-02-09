@@ -40,7 +40,7 @@
             </v-container>
         </v-content>
         <v-footer :fixed="fixed" app>
-            <span>&copy; 2018</span>
+            <span>&copy; 2020</span>
         </v-footer>
     </v-app>
 </template>
@@ -55,7 +55,6 @@
                 clipped: false,
                 drawer: false,
                 fixed: false,
-                items: [{icon: "bubble_chart", title: "Übersicht"}],
                 miniVariant: false,
                 right: true,
                 rightDrawer: false,
@@ -70,15 +69,6 @@
                     {text: "Inhalt", value: "msg"}
                 ],
                 items: [],
-                lineData: {
-                    labels: ["0s", "10s"],
-                    datasets: [
-                        {
-                            label: "Sensor",
-                            data: [10, 20]
-                        }
-                    ]
-                },
                 lineData: [
                     {
                         data: [],
@@ -118,11 +108,10 @@
         },
         computed: {
             statusColor() {
-                console.log("this.connected", this.connected);
                 return this.connected ? "success" : "neutral";
             },
             connectionStatus() {
-                return this.connected ? "Verbunden" : "Nicht verbunden";
+                return this.connected ? "Verbunden" : "Nicht verbunden - Verbindung wird neu aufgebaut...";
             }
         },
         mounted() {
@@ -130,55 +119,39 @@
         },
         methods: {
             connect() {
-                if (!this.connected) {
-                    clearTimeout(this.reconnectionTimeout);
-                    this.dataWs = new WebSocket("ws://127.0.0.1:8080/dummydata");
-                    console.log("new websoecket?");
-                    this.imageWs = new WebSocket("ws://127.0.0.1:8080/image");
-                    this.dataWs.onopen = () => {
-                        this.setConnected(true);
-                        this.dataWs.onmessage = data => {
-                            this.addItem(data.data);
-                        };
-                        this.imageWs.onopen = () => {
-                            this.setConnected(true);
-                            this.imageWs.onmessage = data => {
-                                this.image = data.data;
-                            };
-                        };
-                        this.dataWs.onerror = function (err) {
-                            console.log(err);
-                        };
-                        this.imageWs.onerror = function (err) {
-                            console.log(err);
-                        };
-                        this.dataWs.onclose = () => {
-                            this.setConnected(false);
-                            this.reconnectionTimeout = setTimeout(() => {
-                                console.log("connecting again!");
-                                this.connect();
-                            }, 3000);
-                        };
-                        this.imageWs.onclose = () => {
-                            this.setConnected(false);
-                            this.reconnectionTimeout = setTimeout(() => {
-                                console.log("connecting again!");
-                                this.connect();
-                            }, 3000);
-                        };
-                    }
-                }
+                clearTimeout(this.reconnectionTimeout);
+                this.ws = new WebSocket("ws://127.0.0.1:8080/ws");
+
+                this.ws.onopen = () => {
+                    this.setConnected(true);
+                };
+                this.ws.onmessage = msg => {
+                    const tdata = JSON.parse(msg.data);
+                    this.image = tdata.image;
+                    this.addItem({
+                        id: tdata.id,
+                        timestamp: tdata.timestamp,
+                        sensor: tdata.sensor,
+                        value: tdata.value,
+                        msg: tdata.msg
+                    });
+                };
+                this.ws.onerror = () => {
+                    this.reconnectionTimeout = setTimeout(this.connect, 500);
+                };
+                this.ws.onclose = () => {
+                    this.setConnected(false);
+                    this.reconnectionTimeout = setTimeout(this.connect, 500);
+                };
             },
             setConnected(status) {
                 this.connected = status;
             },
             addItem(data) {
-                var json = JSON.parse(data);
-                this.items.push(json);
-                //console.log(this.items);
-                var newData = [parseInt(json.timestamp), parseInt(json.value)];
-                this.lineData[json.sensor].data.push(newData);
-                this.$refs.lineChart.addData(json.sensor, newData);
+                this.items.push(data);
+                var newData = [parseInt(data.timestamp), parseInt(data.value)];
+                this.lineData[data.sensor].data.push(newData);
+                this.$refs.lineChart.addData(data.sensor, newData);
             }
         }
     };

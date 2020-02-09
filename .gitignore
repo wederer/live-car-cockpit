@@ -1,4 +1,4 @@
 frontend/node_modules
-backend/target
-frontend/dist
+target
+public
 .idea

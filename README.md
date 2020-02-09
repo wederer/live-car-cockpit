@@ -1,14 +1,16 @@
-TODOs:
-
-- Fill this Readme with steps on how to build+run
-	- Build a runnable jar or similar?
-- Fill this Readme with Screenshots
-- Fill the corresponding READMEs of backend/frontend with more information
-- fix Websocket reconnection in frontend
-
-DONE:
-- Remove previous branding
-- Check license of images and post here
+# Live Car Cockpit - A demo project
 
 
-The images used in this repo are from the [Udacity self-driving-car dataset](https://github.com/udacity/self-driving-car/tree/master/datasets/CH2) (MIT License).
+This was an demo project I built for an application. It should represent live data being sent from a car to a cockpit which visualizes the data.
+
+## How to run
+
+```
+cd frontend
+npm run build
+cd ..
+mvn package
+java -jar target/live_car_cockpit-1.0-SNAPSHOT.jar
+
+# open localhost:8080
+```

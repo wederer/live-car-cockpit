@@ -15,3 +15,5 @@ java -jar target/live_car_cockpit-1.0-SNAPSHOT.jar
 
 # open localhost:8080
 ```
+
+The images used in this repo are from the [Udacity self-driving-car dataset](https://github.com/udacity/self-driving-car/tree/master/datasets/CH2) (MIT License).

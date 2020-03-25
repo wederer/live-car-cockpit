@@ -10,6 +10,7 @@ The backend and frontend are connected via a websocket connection and a sequence
 
 ```
 cd frontend
+npm install
 npm run build
 cd ..
 mvn package

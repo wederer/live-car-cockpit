@@ -4,7 +4,7 @@ This was an demo project I built for a job application (in 2018). It should repr
 
 The backend and frontend are connected via a websocket connection and a sequence of images is being sent. The sensor data is randomly generated. The frontend is built with Vue + Vuetify while the backend uses Spring Boot. Additionally the frontend is built with Progressive Web App features, which include a Splash Screen and a Home Screen Icon when added to the home screen of a mobile device.
 
-![Live Car Cockpit Screenshot](live_car_cockpit.png)
+![Live Car Cockpit Screenshot](live_car_cockpit.gif)
 
 ## How to run
 

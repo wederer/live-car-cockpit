@@ -9,7 +9,7 @@
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
-    "highcharts": "^6.1.0",
+    "highcharts": "^9.0.0",
     "vue": "^2.6.11",
     "vue-moment": "^3.2.0",
     "vuetify": "^1.0.0"
